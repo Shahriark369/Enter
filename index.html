@@ -5,43 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TERMINAL // ACCESS_HUB</title>
     <style>
-        body { 
-            background-color: #000000; 
-            color: #00ff41; 
-            font-family: 'Courier New', Courier, monospace; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .card { 
-            background: #050505; 
-            padding: 40px; 
-            border: 1px solid #00ff41; 
-            border-radius: 2px; 
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); 
-            text-align: center; 
-            width: 350px;
-            z-index: 3;
-        }
-
-        h1 { font-size: 1.1rem; margin-bottom: 30px; letter-spacing: 3px; text-shadow: 0 0 8px #00ff41; }
-
-        input { 
-            width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #003b11; 
-            color: #00ff41; outline: none; font-family: 'Courier New', Courier, monospace; text-align: center;
-        }
-
-        button { 
-            width: 100%; padding: 15px; background-color: transparent; color: #00ff41; border: 1px solid #00ff41; 
-            font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 20px; transition: all 0.2s ease;
-        }
-
-        button:hover { background-color: #00ff41; color: #000; box-shadow: 0 0 20px #00ff41; }
-
+        body { background-color: #000; color: #00ff41; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .card { background: #050505; padding: 40px; border: 1px solid #00ff41; text-align: center; width: 350px; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+        h1 { font-size: 1.1rem; margin-bottom: 30px; letter-spacing: 3px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #003b11; color: #00ff41; outline: none; text-align: center; }
+        button { width: 100%; padding: 15px; background: transparent; color: #00ff41; border: 1px solid #00ff41; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #00ff41; color: #000; }
         #status { margin-top: 25px; font-size: 9px; color: #003b11; }
     </style>
 </head>
@@ -50,39 +19,47 @@
 <div class="card">
     <h1>[ COMMAND_CENTER ]</h1>
     <input type="number" id="numberInput" placeholder="INPUT_NUMBER...">
-    <button onclick="checkAndPlay()">ENTER</button>
+    <button id="playBtn">ENTER</button>
     <div id="status">SYSTEM_READY // ENCRYPTION_ACTIVE</div>
 </div>
 
 <audio id="audioFile" preload="auto">
-    <source src="https://www.dropbox.com/scl/fi/svvhjj8yo5b3ss4qvh4bh/mahi.ogg?rlkey=g0rs7ja9sg1njmekvpl0dk52y&st=vufy5srs&dl=1" type="audio/ogg">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/svvhjj8yo5b3ss4qvh4bh/mahi.ogg?rlkey=g0rs7ja9sg1njmekvpl0dk52y&st=vufy5srs" type="audio/ogg">
 </audio>
 
 <script>
-    function checkAndPlay() {
+    const btn = document.getElementById('playBtn');
+    const audio = document.getElementById('audioFile');
+    const status = document.getElementById('status');
+
+    btn.addEventListener('click', function() {
         const num = document.getElementById('numberInput').value;
-        const audio = document.getElementById('audioFile');
-        const status = document.getElementById('status');
 
         if (num === "") {
             alert("ALERT: NO DATA DETECTED");
-        } else {
-            status.innerText = "STATUS: FETCHING_DATA...";
-            status.style.color = "#00ff41";
-
-            // Force the audio to load and play
-            audio.load(); 
-            audio.play()
-                .then(() => {
-                    status.innerText = "STATUS: PLAYING_AUDIO_STREAM";
-                })
-                .catch(error => {
-                    console.error("Playback failed:", error);
-                    status.innerText = "STATUS: ERROR_OVERRIDE_REQUIRED";
-                    alert("Click OK to allow audio to play.");
-                });
+            return;
         }
-    }
+
+        status.innerText = "STATUS: INITIATING_STREAM...";
+        status.style.color = "#00ff41";
+
+        // Step 1: Force Load
+        audio.load();
+
+        // Step 2: Attempt Play
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                status.innerText = "STATUS: PLAYING_AUDIO_STREAM";
+            }).catch(error => {
+                console.log("Playback blocked:", error);
+                status.innerText = "STATUS: ERROR_RETRYING...";
+                // Fallback: try playing again on next frame
+                setTimeout(() => { audio.play(); }, 100);
+            });
+        }
+    });
 </script>
 
 </body>
