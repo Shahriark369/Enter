@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player Website</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e9ecef; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 300px; }
+        h1 { font-size: 1.5rem; color: #333; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: #007bff; }
+        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Check Number</h1>
+    <input type="number" id="numberInput" placeholder="Enter your number">
+    <button onclick="checkAndPlay()">Check</button>
+</div>
+
+<audio id="audioFile">
+    <source src="https://www.dropbox.com/scl/fi/4gugoz6jcot814ummu0oy/20250601-185725.mp3?rlkey=fvc4guvspapc0wtgvf2zsqy3e&st=c1en9jji&raw=1" type="audio/mpeg">
+</audio>
+
+<script>
+    function checkAndPlay() {
+        const num = document.getElementById('numberInput').value;
+        const audio = document.getElementById('audioFile');
+
+        if (num === "") {
+            alert("Please enter a number first!");
+        } else {
+            // Play the sound
+            audio.play().catch(error => {
+                console.error("Audio playback failed:", error);
+                alert("Playback failed. Make sure you interacted with the page first.");
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
