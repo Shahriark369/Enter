@@ -3,27 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Player Website</title>
+    <title>TERMINAL // ACCESS_HUB</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e9ecef; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 300px; }
-        h1 { font-size: 1.5rem; color: #333; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
-        input:focus { border-color: #007bff; }
-        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: background 0.3s; }
-        button:hover { background-color: #218838; }
+        /* Hacker Theme Styling */
+        body { 
+            background-color: #000000; /* Deep Black */
+            color: #00ff41; 
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Scanline Overlay */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 2;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .card { 
+            background: #050505; 
+            padding: 40px; 
+            border: 1px solid #00ff41; 
+            border-radius: 2px; 
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); 
+            text-align: center; 
+            width: 350px;
+            position: relative;
+            z-index: 3;
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 65, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 65, 0.4); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 65, 0.2); }
+        }
+
+        h1 { 
+            font-size: 1.1rem; 
+            margin-bottom: 30px; 
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 8px #00ff41;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            background: #000;
+            border: 1px solid #003b11; 
+            color: #00ff41;
+            border-radius: 0; 
+            box-sizing: border-box; 
+            outline: none; 
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+        }
+
+        input:focus { 
+            border-color: #00ff41;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+        }
+
+        button { 
+            width: 100%; 
+            padding: 15px; 
+            background-color: transparent; 
+            color: #00ff41; 
+            border: 1px solid #00ff41; 
+            font-weight: bold;
+            font-size: 14px; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            margin-top: 20px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover { 
+            background-color: #00ff41; 
+            color: #000;
+            box-shadow: 0 0 20px #00ff41;
+        }
+
+        .status-bar {
+            margin-top: 25px;
+            font-size: 9px;
+            letter-spacing: 1px;
+            color: #003b11;
+        }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h1>Check Number</h1>
-    <input type="number" id="numberInput" placeholder="Enter your number">
-    <button onclick="checkAndPlay()">Check</button>
+    <h1>[ COMMAND_CENTER ]</h1>
+    <input type="number" id="numberInput" placeholder="INPUT_KEY_ID...">
+    <button onclick="checkAndPlay()">RUN_SEQUENCE</button>
+    <div class="status-bar">ENCRYPTION: AES-256 // STATUS: STANDBY</div>
 </div>
 
 <audio id="audioFile">
-    <source src="https://www.dropbox.com/scl/fi/4gugoz6jcot814ummu0oy/20250601-185725.mp3?rlkey=fvc4guvspapc0wtgvf2zsqy3e&st=c1en9jji&raw=1" type="audio/mpeg">
+    <source src="https://www.dropbox.com/scl/fi/wqyi61tgo966wracxvwcp/mota-main.ogg?rlkey=2e7iijg3snwhhq9r5iotllhm5&st=66tp3bfo&dl=0">
 </audio>
 
 <script>
@@ -32,12 +127,14 @@
         const audio = document.getElementById('audioFile');
 
         if (num === "") {
-            alert("Please enter a number first!");
+            alert("ALERT: NO DATA DETECTED IN INPUT FIELD");
         } else {
-            // Play the sound
+            // Visual feedback on click
+            document.querySelector('.status-bar').innerText = "STATUS: EXECUTING AUDIO_FILE...";
+            document.querySelector('.status-bar').style.color = "#00ff41";
+            
             audio.play().catch(error => {
-                console.error("Audio playback failed:", error);
-                alert("Playback failed. Make sure you interacted with the page first.");
+                alert("CRITICAL ERROR: USER INTERACTION REQUIRED FOR OVERRIDE");
             });
         }
     }
