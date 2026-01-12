@@ -18,7 +18,7 @@
             overflow: hidden;
         }
 
-        /* Scanline Overlay */
+        /* Scanline Overlay effect for that CRT monitor look */
         body::before {
             content: " ";
             display: block;
@@ -118,7 +118,8 @@
 </div>
 
 <audio id="audioFile">
-    <source src="https://www.dropbox.com/scl/fi/wqyi61tgo966wracxvwcp/mota-main.ogg?rlkey=2e7iijg3snwhhq9r5iotllhm5&st=66tp3bfo&dl=0">
+    <source src="https://www.dropbox.com/scl/fi/svvhjj8yo5b3ss4qvh4bh/mahi.ogg?rlkey=g0rs7ja9sg1njmekvpl0dk52y&st=vufy5srs&raw=1" type="audio/ogg">
+    Your browser does not support the audio element.
 </audio>
 
 <script>
@@ -129,11 +130,12 @@
         if (num === "") {
             alert("ALERT: NO DATA DETECTED IN INPUT FIELD");
         } else {
-            // Visual feedback on click
-            document.querySelector('.status-bar').innerText = "STATUS: EXECUTING AUDIO_FILE...";
+            // Visual feedback on execution
+            document.querySelector('.status-bar').innerText = "STATUS: EXECUTING AUDIO_STREAM...";
             document.querySelector('.status-bar').style.color = "#00ff41";
             
             audio.play().catch(error => {
+                console.error("Playback Error:", error);
                 alert("CRITICAL ERROR: USER INTERACTION REQUIRED FOR OVERRIDE");
             });
         }
