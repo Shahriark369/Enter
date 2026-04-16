@@ -3,63 +3,1216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL // ACCESS_HUB</title>
+    <title>CYBER SONIC // Page Index</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        body { background-color: #000; color: #00ff41; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .card { background: #050505; padding: 40px; border: 1px solid #00ff41; text-align: center; width: 350px; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
-        h1 { font-size: 1.1rem; margin-bottom: 30px; letter-spacing: 3px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #003b11; color: #00ff41; outline: none; text-align: center; }
-        button { width: 100%; padding: 15px; background: transparent; color: #00ff41; border: 1px solid #00ff41; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        button:hover { background: #00ff41; color: #000; }
-        #status { margin-top: 25px; font-size: 9px; color: #003b11; }
+        :root {
+            --neon-cyan: #00f0ff;
+            --neon-blue: #2d7aff;
+            --neon-gold: #ffd700;
+            --neon-orange: #ff6b00;
+            --neon-pink: #ff2d95;
+            --neon-green: #00ff88;
+            --neon-purple: #b400ff;
+            --bg-void: #020410;
+            --bg-panel: #06091a;
+            --bg-row: #0a0e24;
+            --bg-row-hover: #0f1538;
+            --text-bright: #ffffff;
+            --text-dim: #4a5080;
+            --border-dim: rgba(0, 240, 255, 0.07);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--bg-void);
+            color: var(--text-bright);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* SPEED LINES LAYER */
+        #speedLines {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .speed-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.4), transparent);
+            animation: speedDash linear infinite;
+            border-radius: 2px;
+        }
+
+        @keyframes speedDash {
+            0% { transform: translateX(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(200vw); opacity: 0; }
+        }
+
+        /* PARALLAX STAR FIELD */
+        #starfield {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            animation: starScroll linear infinite;
+        }
+
+        @keyframes starScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-200px); }
+        }
+
+        /* PARTICLE CANVAS */
+        #particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* GROUND HORIZON */
+        .ground-horizon {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%; height: 180px;
+            background: linear-gradient(0deg, rgba(0, 240, 255, 0.04) 0%, transparent 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ground-horizon::before {
+            content: '';
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 5%, rgba(0, 240, 255, 0.15) 50%, transparent 95%);
+        }
+
+        .ground-grid {
+            position: fixed;
+            bottom: 0; left: -50%;
+            width: 200%; height: 60px;
+            background:
+                linear-gradient(90deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+            background-size: 80px 30px;
+            transform: perspective(300px) rotateX(45deg);
+            transform-origin: center top;
+            animation: groundScroll 2s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes groundScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 80px 30px; }
+        }
+
+        /* FLOATING RINGS */
+        .ring {
+            position: fixed;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            border: 3px solid var(--neon-gold);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.3), inset 0 0 8px rgba(255, 215, 0, 0.15);
+            z-index: 0;
+            pointer-events: none;
+            animation: ringFloat 6s ease-in-out infinite, ringGlow 2s ease-in-out infinite;
+        }
+
+        .ring::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 10px; height: 10px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.5), transparent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes ringFloat {
+            0%, 100% { transform: translateY(0) rotateY(0deg); }
+            50% { transform: translateY(-20px) rotateY(180deg); }
+        }
+
+        @keyframes ringGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(255, 215, 0, 0.3), inset 0 0 8px rgba(255, 215, 0, 0.15); }
+            50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6), inset 0 0 15px rgba(255, 215, 0, 0.3); }
+        }
+
+        /* MAIN HUD CONTAINER */
+        .game-hud {
+            position: relative;
+            z-index: 10;
+            max-width: 980px;
+            margin: 20px auto 100px;
+        }
+
+        /* TOP HUD BAR */
+        .hud-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: linear-gradient(180deg, rgba(0, 240, 255, 0.08), rgba(0, 240, 255, 0.02));
+            border: 1px solid var(--border-dim);
+            border-bottom: none;
+            border-radius: 16px 16px 0 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .hud-left, .hud-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hud-icon {
+            width: 28px; height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .hud-icon.ring-icon {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--neon-gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .hud-icon.speed-icon {
+            background: rgba(0, 240, 255, 0.15);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
+        .hud-icon.stage-icon {
+            background: rgba(255, 45, 149, 0.15);
+            color: var(--neon-pink);
+            box-shadow: 0 0 10px rgba(255, 45, 149, 0.2);
+        }
+
+        .hud-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 7px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            display: block;
+        }
+
+        .hud-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .hud-value.gold { color: var(--neon-gold); text-shadow: 0 0 12px rgba(255, 215, 0, 0.5); }
+        .hud-value.cyan { color: var(--neon-cyan); text-shadow: 0 0 12px rgba(0, 240, 255, 0.5); }
+        .hud-value.pink { color: var(--neon-pink); text-shadow: 0 0 12px rgba(255, 45, 149, 0.5); }
+
+        /* BOOST GAUGE */
+        .boost-gauge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .boost-track {
+            width: 100px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+        }
+
+        .boost-fill {
+            height: 100%;
+            width: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-purple));
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+            animation: boostPulse 2s ease-in-out infinite;
+            transition: width 0.3s;
+        }
+
+        @keyframes boostPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .boost-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 6px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+        }
+
+        /* GAME TITLE HEADER */
+        .game-header {
+            padding: 36px 30px 30px;
+            text-align: center;
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border-dim);
+            border-right: 1px solid var(--border-dim);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.06) 0%, transparent 60%);
+        }
+
+        .sonic-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 6px 20px 6px 8px;
+            background: linear-gradient(90deg, rgba(255, 107, 0, 0.15), rgba(255, 215, 0, 0.08));
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            border-radius: 30px;
+        }
+
+        .sonic-avatar {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, var(--neon-orange), var(--neon-gold));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
+            animation: avatarPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes avatarPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.4); transform: scale(1); }
+            50% { box-shadow: 0 0 35px rgba(255, 107, 0, 0.7); transform: scale(1.05); }
+        }
+
+        .sonic-badge-text {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            color: var(--neon-gold);
+            letter-spacing: 2px;
+        }
+
+        .game-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 6px;
+        }
+
+        .game-title .cyber {
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, #fff 40%, var(--neon-cyan) 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6));
+        }
+
+        .game-title .sonic {
+            background: linear-gradient(135deg, var(--neon-orange) 0%, var(--neon-gold) 50%, var(--neon-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(255, 107, 0, 0.6));
+            animation: sonicFlicker 3s ease-in-out infinite;
+        }
+
+        @keyframes sonicFlicker {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 107, 0, 0.6)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.9)); }
+        }
+
+        .game-subtitle {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: var(--text-dim);
+            letter-spacing: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-subtitle .blink {
+            animation: cursorBlink 1s step-end infinite;
+            color: var(--neon-cyan);
+        }
+
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* SPEED TRAIL behind title */
+        .speed-trail {
+            position: absolute;
+            top: 50%; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-orange), transparent);
+            opacity: 0.3;
+            animation: trailSweep 3s linear infinite;
+            transform: translateY(-50%);
+        }
+
+        @keyframes trailSweep {
+            0% { clip-path: inset(0 100% 0 0); }
+            100% { clip-path: inset(0 0 0 0); }
+        }
+
+        /* SEARCH AS "SCAN RADAR" */
+        .radar-section {
+            padding: 20px 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 1px solid var(--border-dim);
+            border-right: 1px solid var(--border-dim);
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .radar-wrap {
+            position: relative;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .radar-ring {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px; height: 18px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50%;
+            animation: radarPing 2s ease-out infinite;
+        }
+
+        .radar-ring::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 4px; height: 4px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px var(--neon-green);
+        }
+
+        @keyframes radarPing {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
+            100% { box-shadow: 0 0 0 15px rgba(0, 255, 136, 0); }
+        }
+
+        .radar-input {
+            width: 100%;
+            padding: 14px 46px 14px 20px;
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.12);
+            border-radius: 12px;
+            color: var(--neon-green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .radar-input::placeholder {
+            color: rgba(0, 255, 136, 0.3);
+        }
+
+        .radar-input:focus {
+            border-color: rgba(0, 255, 136, 0.4);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.08), inset 0 0 30px rgba(0, 255, 136, 0.02);
+        }
+
+        /* STAGE SELECT PANEL */
+        .stage-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border-dim);
+            border-right: 1px solid var(--border-dim);
+            border-bottom: 1px solid var(--border-dim);
+            border-radius: 0 0 16px 16px;
+            overflow: hidden;
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 24px;
+            background: rgba(255, 107, 0, 0.04);
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .stage-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: var(--neon-orange);
+            text-shadow: 0 0 10px rgba(255, 107, 0, 0.4);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stage-label i {
+            font-size: 14px;
+            animation: flagWave 2s ease-in-out infinite;
+        }
+
+        @keyframes flagWave {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .stage-count {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .stage-count span {
+            color: var(--neon-gold);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+        }
+
+        /* TABLE / STAGE LIST */
+        .stage-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stage-table thead th {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 7px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(0, 240, 255, 0.5);
+            padding: 12px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-dim);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .stage-table tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.25s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .stage-table tbody tr::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 0; height: 100%;
+            background: linear-gradient(90deg, rgba(0, 240, 255, 0.06), transparent);
+            transition: width 0.4s ease;
+        }
+
+        .stage-table tbody tr:hover::after {
+            width: 100%;
+        }
+
+        .stage-table tbody tr:hover {
+            background: rgba(0, 240, 255, 0.03);
+        }
+
+        .stage-table td {
+            padding: 10px 20px;
+            vertical-align: middle;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* CHECKPOINT NUMBER */
+        .checkpoint {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            width: 40px; height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-dim);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stage-table tbody tr:hover .checkpoint {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(0, 240, 255, 0.05);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+            transform: scale(1.1);
+        }
+
+        .checkpoint .cp-dot {
+            position: absolute;
+            top: -2px; right: -2px;
+            width: 8px; height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--neon-green);
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.7); }
+        }
+
+        /* STAGE INFO */
+        .stage-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stage-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .stage-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-bright);
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stage-name .zone-tag {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 6px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--neon-cyan);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .stage-table tbody tr:hover .stage-name {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        }
+
+        .stage-url {
+            font-size: 11px;
+            color: var(--text-dim);
+            word-break: break-all;
+            transition: color 0.3s;
+            line-height: 1.5;
+        }
+
+        .stage-link:hover .stage-url {
+            color: rgba(0, 240, 255, 0.5);
+        }
+
+        /* BOOST BUTTON */
+        .boost-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 107, 0, 0.25);
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.08), rgba(255, 215, 0, 0.04));
+            color: var(--neon-orange);
+            text-decoration: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .boost-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .boost-btn:hover::before { left: 100%; }
+
+        .boost-btn:hover {
+            border-color: var(--neon-gold);
+            color: var(--neon-gold);
+            box-shadow: 0 0 30px rgba(255, 107, 0, 0.25), inset 0 0 30px rgba(255, 107, 0, 0.05);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            transform: scale(1.05);
+        }
+
+        .boost-btn i {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        .boost-btn:hover i {
+            transform: translateX(4px) scale(1.2);
+        }
+
+        /* NO RESULTS */
+        .no-signal {
+            text-align: center;
+            padding: 50px 20px;
+            display: none;
+        }
+
+        .no-signal i {
+            font-size: 50px;
+            color: rgba(255, 45, 149, 0.2);
+            margin-bottom: 16px;
+            display: block;
+            animation: lostPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes lostPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.6; }
+        }
+
+        .no-signal p {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+
+        /* FOOTER */
+        .game-footer {
+            text-align: center;
+            padding: 24px 20px 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .game-footer p {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 7px;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+            line-height: 2;
+        }
+
+        .game-footer .press-start {
+            color: var(--neon-cyan);
+            animation: pressBlink 2s step-end infinite;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+
+        @keyframes pressBlink {
+            0%, 60% { opacity: 1; }
+            61%, 100% { opacity: 0; }
+        }
+
+        /* ROW ENTRY */
+        .row-enter {
+            animation: stageReveal 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes stageReveal {
+            from { opacity: 0; transform: translateX(-40px) scale(0.95); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        /* COMBO POPUP */
+        .combo-popup {
+            position: fixed;
+            pointer-events: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 24px;
+            color: var(--neon-gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 107, 0, 0.4);
+            z-index: 100;
+            animation: comboFly 0.8s ease-out forwards;
+        }
+
+        @keyframes comboFly {
+            0% { opacity: 1; transform: translateY(0) scale(0.5); }
+            50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+        }
+
+        /* SCORE FLY */
+        .score-fly {
+            position: fixed;
+            pointer-events: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+            z-index: 100;
+            animation: scoreFlyUp 1s ease-out forwards;
+        }
+
+        @keyframes scoreFlyUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-50px); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-void); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.15); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.3); }
+
+        /* RESPONSIVE */
+        @media (max-width: 700px) {
+            body { padding: 8px; }
+            .game-hud { margin: 10px auto 80px; }
+            .hud-bar { flex-wrap: wrap; gap: 8px; padding: 8px 14px; }
+            .hud-left, .hud-right { gap: 12px; }
+            .boost-gauge { display: none; }
+            .game-header { padding: 28px 18px 24px; }
+            .game-title { font-size: 20px; letter-spacing: 3px; }
+            .radar-section { padding: 16px 18px; }
+            .stage-table thead th, .stage-table td { padding: 10px 14px; }
+            .hide-mobile { display: none !important; }
+            .stage-name .zone-tag { display: none; }
+            .sonic-badge { font-size: 7px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>[ COMMAND_CENTER ]</h1>
-    <input type="number" id="numberInput" placeholder="INPUT_NUMBER...">
-    <button id="playBtn">ENTER</button>
-    <div id="status">SYSTEM_READY // ENCRYPTION_ACTIVE</div>
+<canvas id="particles"></canvas>
+<div id="speedLines"></div>
+<div id="starfield"></div>
+<div class="ground-horizon"></div>
+<div class="ground-grid"></div>
+
+<!-- Floating Rings -->
+<div class="ring" style="top:12%; left:8%; animation-delay:0s;"></div>
+<div class="ring" style="top:30%; right:6%; animation-delay:1s; width:22px; height:22px;"></div>
+<div class="ring" style="top:65%; left:4%; animation-delay:2.5s; width:26px; height:26px;"></div>
+<div class="ring" style="top:80%; right:10%; animation-delay:3.5s;"></div>
+<div class="ring" style="top:45%; left:15%; animation-delay:4.5s; width:18px; height:18px;"></div>
+
+<div class="game-hud">
+
+    <!-- TOP HUD -->
+    <div class="hud-bar">
+        <div class="hud-left">
+            <div class="hud-item">
+                <div class="hud-icon ring-icon"><i class="fa-solid fa-ring"></i></div>
+                <div>
+                    <span class="hud-label">RINGS</span>
+                    <span class="hud-value gold" id="ringCount">0</span>
+                </div>
+            </div>
+            <div class="hud-item">
+                <div class="hud-icon speed-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                    <span class="hud-label">SCORE</span>
+                    <span class="hud-value cyan" id="scoreCount">0</span>
+                </div>
+            </div>
+            <div class="hud-item">
+                <div class="hud-icon stage-icon"><i class="fa-solid fa-map"></i></div>
+                <div>
+                    <span class="hud-label">STAGES</span>
+                    <span class="hud-value pink" id="stageCount">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="hud-right">
+            <div class="boost-gauge">
+                <span class="boost-label">BOOST</span>
+                <div class="boost-track">
+                    <div class="boost-fill" id="boostFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME HEADER -->
+    <div class="game-header">
+        <div class="speed-trail"></div>
+        <div class="sonic-badge">
+            <div class="sonic-avatar"><i class="fa-solid fa-bolt"></i></div>
+            <span class="sonic-badge-text">PLAYER 1</span>
+        </div>
+        <div class="game-title">
+            <span class="cyber">CYBER</span> <span class="sonic">SONIC</span>
+        </div>
+        <div class="game-subtitle">PAGE INDEX SYSTEM <span class="blink">_</span></div>
+    </div>
+
+    <!-- SEARCH RADAR -->
+    <div class="radar-section">
+        <div class="radar-wrap">
+            <input type="text" class="radar-input" id="searchInput" placeholder="[ SCAN STAGES... ]">
+            <div class="radar-ring"></div>
+        </div>
+    </div>
+
+    <!-- STAGE SELECT -->
+    <div class="stage-panel">
+        <div class="stage-header">
+            <div class="stage-label"><i class="fa-solid fa-flag-checkered"></i> STAGE SELECT</div>
+            <div class="stage-count">FOUND: <span id="foundCount">0</span></div>
+        </div>
+        <div style="overflow-x:auto;">
+            <table class="stage-table">
+                <thead>
+                    <tr>
+                        <th style="width:65px;">CP</th>
+                        <th>Zone Name</th>
+                        <th class="hide-mobile" style="width:130px; text-align:center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="stageList"></tbody>
+            </table>
+        </div>
+        <div class="no-signal" id="noSignal">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p>NO SIGNAL FOUND</p>
+        </div>
+    </div>
+
 </div>
 
-<audio id="audioFile" preload="auto">
-    <source src="https://dl.dropboxusercontent.com/scl/fi/svvhjj8yo5b3ss4qvh4bh/mahi.ogg?rlkey=g0rs7ja9sg1njmekvpl0dk52y&st=vufy5srs" type="audio/ogg">
-</audio>
+<!-- FOOTER -->
+<div class="game-footer">
+    <p>PRESS ANY LINK TO BOOST <span class="press-start">START</span></p>
+    <p style="margin-top:8px; color:rgba(255,255,255,0.15);">CYBER SONIC v3.7 // ZONE ARCHIVE</p>
+</div>
 
 <script>
-    const btn = document.getElementById('playBtn');
-    const audio = document.getElementById('audioFile');
-    const status = document.getElementById('status');
+    const fbLinks = [
+        "https://www.facebook.com/profile.php?id=61571591854935",
+        "https://www.facebook.com/takhfee",
+        "https://www.facebook.com/Birstibeautyparlar",
+        "https://www.facebook.com/rajuveshojvander",
+        "https://www.facebook.com/profile.php?id=61566862416346",
+        "https://www.facebook.com/profile.php?id=61565680372923",
+        "https://www.facebook.com/healthyfoodservicebangladesh",
+        "https://www.facebook.com/btbymaliha",
+        "https://www.facebook.com/upshorgo",
+        "https://www.facebook.com/rodabaszone",
+        "https://www.facebook.com/profile.php?id=61575362853632",
+        "https://www.facebook.com/profile.php?id=61573313030010",
+        "https://www.facebook.com/hajjekaababd",
+        "https://www.facebook.com/FarukAhmedsmethod",
+        "https://www.facebook.com/onlycottonbd",
+        "https://www.facebook.com/profile.php?id=61575741474373",
+        "https://www.facebook.com/FirnasOfficial",
+        "https://www.facebook.com/profile.php?id=61570704385530",
+        "https://www.facebook.com/profile.php?id=61575132014077",
+        "https://www.facebook.com/kathkabboxy",
+        "https://www.facebook.com/TRADEBANGLA121",
+        "https://www.facebook.com/profile.php?id=100090972725289",
+        "https://www.facebook.com/profile.php?id=61578104549524",
+        "https://www.facebook.com/jannatshop1988"
+    ];
 
-    btn.addEventListener('click', function() {
-        const num = document.getElementById('numberInput').value;
+    const zoneNames = [
+        "NEON DISTRICT", "DIGITAL RUINS", "CHROME GARDEN", "DATA SEWERS",
+        "SKY GRID", "VOID MARKET", "EMERALD PLAZA", "SILICON RIFT",
+        "ECHO VALLEY", "PLASMA DOCKS", "CIRCUIT FALLS", "ZERO POINT",
+        "GOLDEN TEMPLE", "METHOD LAB", "COTTON FIELDS", "SHADOW NEXUS",
+        "FIRNAS PEAK", "QUANTUM SHORE", "CRYSTAL CAVE", "KATH KAB BOX",
+        "TRADE GATE", "OLD WAREHOUSE", "SIGNAL TOWER", "JANNAT BAZAAR"
+    ];
 
-        if (num === "") {
-            alert("ALERT: NO DATA DETECTED");
-            return;
-        }
+    function getDisplayName(url) {
+        const slug = url.replace('https://www.facebook.com/', '');
+        if (slug.startsWith('profile.php')) return 'User Profile';
+        return slug.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    }
 
-        status.innerText = "STATUS: INITIATING_STREAM...";
-        status.style.color = "#00ff41";
+    let score = 0;
+    let rings = fbLinks.length * 10;
+    const stageList = document.getElementById('stageList');
+    const searchInput = document.getElementById('searchInput');
+    const noSignal = document.getElementById('noSignal');
 
-        // Step 1: Force Load
-        audio.load();
+    function renderStages(filter = '') {
+        stageList.innerHTML = '';
+        const filtered = fbLinks.filter((link, i) => {
+            const name = getDisplayName(link).toLowerCase();
+            const zone = zoneNames[i].toLowerCase();
+            const url = link.toLowerCase();
+            return name.includes(filter) || zone.includes(filter) || url.includes(filter);
+        });
 
-        // Step 2: Attempt Play
-        const playPromise = audio.play();
+        noSignal.style.display = filtered.length === 0 ? 'block' : 'none';
+        document.getElementById('foundCount').textContent = filtered.length;
 
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                status.innerText = "STATUS: PLAYING_AUDIO_STREAM";
-            }).catch(error => {
-                console.log("Playback blocked:", error);
-                status.innerText = "STATUS: ERROR_RETRYING...";
-                // Fallback: try playing again on next frame
-                setTimeout(() => { audio.play(); }, 100);
+        filtered.forEach((link, i) => {
+            const origIdx = fbLinks.indexOf(link);
+            const name = getDisplayName(link);
+            const zone = zoneNames[origIdx];
+            const tr = document.createElement('tr');
+            tr.classList.add('row-enter');
+            tr.style.animationDelay = `${i * 0.035}s`;
+
+            tr.innerHTML = `
+                <td>
+                    <span class="checkpoint">
+                        ${String(origIdx + 1).padStart(2, '0')}
+                        <span class="cp-dot"></span>
+                    </span>
+                </td>
+                <td>
+                    <a href="${link}" target="_blank" rel="noopener" class="stage-link" data-idx="${origIdx}">
+                        <div class="stage-name">
+                            ${name}
+                            <span class="zone-tag">${zone}</span>
+                        </div>
+                        <span class="stage-url">${link}</span>
+                    </a>
+                </td>
+                <td class="hide-mobile" style="text-align:center;">
+                    <a href="${link}" target="_blank" rel="noopener" class="boost-btn" data-idx="${origIdx}">
+                        BOOST <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                </td>
+            `;
+
+            // Combo on click
+            const links = tr.querySelectorAll('a');
+            links.forEach(a => {
+                a.addEventListener('click', function(e) {
+                    spawnCombo(e.clientX, e.clientY);
+                    addScore(100);
+                    drainBoost(15);
+                });
             });
-        }
+
+            stageList.appendChild(tr);
+        });
+    }
+
+    searchInput.addEventListener('input', e => {
+        renderStages(e.target.value.toLowerCase().trim());
     });
+
+    // HUD Counter Animation
+    function animateValue(el, target, duration = 1000) {
+        let start = 0;
+        const step = Math.max(1, target / (duration / 16));
+        function tick() {
+            start += step;
+            if (start >= target) { el.textContent = target; return; }
+            el.textContent = Math.floor(start);
+            requestAnimationFrame(tick);
+        }
+        tick();
+    }
+
+    setTimeout(() => {
+        animateValue(document.getElementById('ringCount'), rings);
+        animateValue(document.getElementById('scoreCount'), 0);
+        animateValue(document.getElementById('stageCount'), fbLinks.length);
+    }, 400);
+
+    function addScore(pts) {
+        score += pts;
+        document.getElementById('scoreCount').textContent = score;
+    }
+
+    function drainBoost(amount) {
+        const fill = document.getElementById('boostFill');
+        let w = parseFloat(fill.style.width) || 100;
+        w = Math.max(0, w - amount);
+        fill.style.width = w + '%';
+        if (w < 30) {
+            fill.style.background = 'linear-gradient(90deg, #ff2d95, #ff6b00)';
+        } else {
+            fill.style.background = 'linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-purple))';
+        }
+        // Auto recharge
+        setTimeout(() => {
+            w = Math.min(100, w + amount);
+            fill.style.width = w + '%';
+            if (w >= 30) {
+                fill.style.background = 'linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-purple))';
+            }
+        }, 2000);
+    }
+
+    // Combo popup
+    function spawnCombo(x, y) {
+        const el = document.createElement('div');
+        el.className = 'combo-popup';
+        el.textContent = '+100';
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 800);
+
+        // Bonus score fly
+        const sf = document.createElement('div');
+        sf.className = 'score-fly';
+        sf.textContent = 'BOOST!';
+        sf.style.left = (x + 30) + 'px';
+        sf.style.top = (y + 10) + 'px';
+        document.body.appendChild(sf);
+        setTimeout(() => sf.remove(), 1000);
+    }
+
+    renderStages();
+
+    // SPEED LINES GENERATOR
+    (function createSpeedLines() {
+        const container = document.getElementById('speedLines');
+        for (let i = 0; i < 15; i++) {
+            const line = document.createElement('div');
+            line.className = 'speed-line';
+            line.style.top = Math.random() * 100 + '%';
+            line.style.width = (Math.random() * 200 + 80) + 'px';
+            line.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+            line.style.animationDelay = (Math.random() * 5) + 's';
+            line.style.opacity = Math.random() * 0.5 + 0.1;
+            container.appendChild(line);
+        }
+    })();
+
+    // STAR FIELD
+    (function createStars() {
+        const container = document.getElementById('starfield');
+        for (let i = 0; i < 60; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2 + 0.5;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.background = ['#00f0ff', '#fff', '#ffd700', '#ff2d95'][Math.floor(Math.random() * 4)];
+            star.style.opacity = Math.random() * 0.6 + 0.1;
+            star.style.animationDuration = (Math.random() * 8 + 4) + 's';
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            container.appendChild(star);
+        }
+    })();
+
+    // PARTICLE SYSTEM
+    (function() {
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let w, h, particles = [];
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.size = Math.random() * 1.8 + 0.3;
+                this.speedX = -(Math.random() * 1.5 + 0.3);
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.4 + 0.1;
+                const colors = ['#00f0ff', '#ffd700', '#ff6b00', '#ff2d95', '#00ff88'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < -10) { this.x = w + 10; this.y = Math.random() * h; }
+                if (this.y < 0 || this.y > h) this.speedY *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+
+                // Motion trail
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x + this.speedX * 6, this.y);
+                ctx.strokeStyle = this.color;
+                ctx.globalAlpha = this.opacity * 0.3;
+                ctx.lineWidth = this.size * 0.6;
+                ctx.stroke();
+
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        const count = Math.min(70, Math.floor(w * h / 18000));
+        for (let i = 0; i < count; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, w, h);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    })();
 </script>
 
 </body>
